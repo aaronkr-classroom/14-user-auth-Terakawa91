@@ -74,17 +74,18 @@ const passport = require("passport"); // passport를 요청
 router.use(passport.initialize()); // passport를 초기화
 router.use(passport.session()); // passport가 Express.js 내 세션을 사용하도록 설정
 
+
 /**
  * @TODO: 
  * 
  * Listing 24.2 (p. 351)
  * main.js에서 passport 직렬화 설정
  */
+
 const User = require("./models/User"); // User 모델을 요청
 passport.use(User.createStrategy()); // User 모델의 인증 전략을 passport에 전달
-passport.serializeUser(User.serializeUser()); // User 모델의 직렬화 메서드를 passport에 전달
-passport.deserializeUser(User.deserializeUser()); // User 모델의 역직렬화 메서드를 passport에 전달
-
+passport.serializeUser(User.serializeUser());// User 모델의 직렬화 메서드를 passport에 전달
+passport.deserializeUser(User.deserializeUser());// User 모델의 역직렬화 메서드를 passport에 전달
 /**
  * Listing 22.2 (p. 327)
  * 응답상에서 connectFlash와 미들웨어와의 연계
@@ -102,6 +103,8 @@ router.use((req, res, next) => {
   // 로그인 여부를 확인하는 불리언 값을 로컬 변수에 추가
   res.locals.loggedIn = req.isAuthenticated();
   // 현재 사용자를 로컬 변수에 추가
+  res.locals.currentUser = req.user;
+  res.locals.loggedIn = req.isAuthenticated(); // passprot boolean
   res.locals.currentUser = req.user;
   next();
 });
